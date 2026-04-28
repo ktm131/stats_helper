@@ -2,51 +2,108 @@ import streamlit as st
 import numpy as np
 from scipy.stats import norm, t
 
-st.title("Kalkulator przedziałów ufności")
+st.set_page_config(page_title="Przedziały ufności", layout="centered")
 
+st.title("📊 Kalkulator przedziałów ufności")
+
+st.markdown("""
+Obliczanie przedziału ufności dla średniej.
+
+**Założenie:**
+- dla n ≥ 30 → rozkład normalny (Z)
+- dla n < 30 → rozkład t-Studenta
+""")
+
+# ======================
 # INPUT
-n = st.number_input("Liczebność próby (n)", min_value=1, value=30)
-mean = st.number_input("Średnia (x̄)", value=10.0)
-std = st.number_input("Odchylenie standardowe", value=2.0)
+# ======================
 
-std_type = st.radio(
-    "Rodzaj odchylenia:",
-    ["Z populacji (σ)", "Z próby (s)"]
-)
+st.header("🔢 Dane wejściowe")
 
-confidence = st.slider("Poziom ufności (%)", 80, 99, 95)
+col1, col2 = st.columns(2)
 
-# OBLICZENIA
+with col1:
+    n = st.number_input("Liczebność próby (n)", min_value=1, value=30)
+    mean = st.number_input("Średnia (x̄)", value=10.0)
+
+with col2:
+    std = st.number_input("Odchylenie standardowe (s)", value=2.0)
+    confidence = st.slider("Poziom ufności (%)", 80, 99, 95)
+
 alpha = 1 - confidence / 100
 
-if std_type == "Z populacji (σ)":
-    z = norm.ppf(1 - alpha / 2)
-    margin = z * (std / np.sqrt(n))
-    dist_symbol = "z"
+# ======================
+# OBLICZENIA
+# ======================
+
+if n >= 30:
+    crit_value = norm.ppf(1 - alpha / 2)
+    margin = crit_value * (std / np.sqrt(n))
+    dist = "Z"
 else:
-    t_val = t.ppf(1 - alpha / 2, df=n-1)
-    margin = t_val * (std / np.sqrt(n))
-    dist_symbol = "t"
+    crit_value = t.ppf(1 - alpha / 2, df=n - 1)
+    margin = crit_value * (std / np.sqrt(n))
+    dist = "t"
 
 lower = mean - margin
 upper = mean + margin
 
+# ======================
 # WYNIK
-st.subheader("📊 Wynik")
+# ======================
 
-st.latex(r"\bar{x} = " + str(mean))
-st.latex(r"n = " + str(n))
-st.latex(r"s/\sigma = " + str(std))
+st.header("📈 Wynik")
 
-if dist_symbol == "z":
-    st.latex(r"CI = \bar{x} \pm z \cdot \frac{\sigma}{\sqrt{n}}")
-    st.latex(
-        rf"{mean} \pm {z:.3f} \cdot \frac{{{std}}}{{\sqrt{{{n}}}}}"
-    )
+if dist == "Z":
+    st.markdown("**Użyto rozkładu normalnego (Z)**")
+    st.latex(r"\left( \bar{X} \pm z_{1-\frac{\alpha}{2}} \cdot \frac{s}{\sqrt{n}} \right)")
 else:
-    st.latex(r"CI = \bar{x} \pm t \cdot \frac{s}{\sqrt{n}}")
-    st.latex(
-        rf"{mean} \pm {t_val:.3f} \cdot \frac{{{std}}}{{\sqrt{{{n}}}}}"
-    )
+    st.markdown("**Użyto rozkładu t-Studenta**")
+    st.latex(r"\left( \bar{X} \pm t_{1-\frac{\alpha}{2}, n-1} \cdot \frac{s}{\sqrt{n}} \right)")
+
+# ======================
+# KROKI OBLICZEŃ
+# ======================
+
+st.subheader("📘 Kroki obliczeń")
+
+# Krok 1
+st.markdown("### 1️⃣ Dane")
+st.latex(rf"n = {n}")
+st.latex(rf"\bar{{x}} = {mean}")
+st.latex(rf"s = {std}")
+st.latex(rf"\alpha = {alpha:.3f}")
+
+# Krok 2
+st.markdown("### 2️⃣ Wartość krytyczna")
+
+if dist == "Z":
+    st.latex(rf"z_{{1-\frac{{\alpha}}{{2}}}} = {crit_value:.3f}")
+else:
+    st.latex(rf"t_{{1-\frac{{\alpha}}{{2}}, {n-1}}} = {crit_value:.3f}")
+
+# Krok 3
+st.markdown("### 3️⃣ Podstawienie do wzoru")
+
+st.latex(
+    rf"{mean} \pm {crit_value:.3f} \cdot \frac{{{std}}}{{\sqrt{{{n}}}}}"
+)
+
+# Krok 4
+st.markdown("### 4️⃣ Wynik końcowy")
+
+st.latex(
+    rf"({mean:.3f} - {margin:.3f},\ {mean:.3f} + {margin:.3f})"
+)
 
 st.success(f"Przedział ufności: ({lower:.3f}, {upper:.3f})")
+
+# ======================
+# INFO (opcjonalne, ale wygląda profesjonalnie)
+# ======================
+
+st.markdown("---")
+st.info("""
+📌 Przyjęto uproszczenie:
+dla dużych prób (n ≥ 30) zastosowano przybliżenie rozkładem normalnym.
+""")
