@@ -79,6 +79,15 @@ else:
         rf"\left( \bar{{X}} \pm t_{{1-\frac{{\alpha}}{{2}}, n-1}} \cdot \frac{{s}}{{\sqrt{{n}}}} \right)"
     )
 
+st.markdown("---")
+st.info("""
+📌 Interpretacja:
+- Jeśli znane jest σ → używamy rozkładu normalnego
+- Jeśli σ nieznane:
+    - dla dużych prób (n ≥ 30) → aproksymacja normalna
+    - dla małych prób → rozkład t-Studenta
+""")
+
 # ======================
 # KROKI OBLICZEŃ
 # ======================
@@ -94,15 +103,6 @@ st.latex(rf"\alpha = {alpha:.3f}")
 
 # Krok 2
 st.markdown("### 2️⃣ Wartość krytyczna")
-
-st.markdown("---")
-st.info("""
-📌 Interpretacja:
-- Jeśli znane jest σ → używamy rozkładu normalnego
-- Jeśli σ nieznane:
-    - dla dużych prób (n ≥ 30) → aproksymacja normalna
-    - dla małych prób → rozkład t-Studenta
-""")
 
 if dist == "Z":
     st.latex(rf"u_{{1-\frac{{\alpha}}{{2}}}} = {crit_value:.3f}")
