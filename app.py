@@ -10,8 +10,8 @@ st.markdown("""
 Obliczanie przedziału ufności dla średniej.
 
 **Zasady:**
-- σ znane → rozkład normalny (Z)
-- σ nieznane i n ≥ 30 → rozkład normalny (Z)
+- σ znane → rozkład normalny (U)
+- σ nieznane i n ≥ 30 → rozkład normalny (U)
 - σ nieznane i n < 30 → rozkład t-Studenta
 """)
 
@@ -69,9 +69,9 @@ upper = mean + margin
 st.header("📈 Wynik")
 
 if dist == "Z":
-    st.markdown("**Użyto rozkładu normalnego (Z)**")
+    st.markdown("**Użyto rozkładu normalnego (U)**")
     st.latex(
-        rf"\left( \bar{{X}} \pm u_{{1-\frac{{\alpha}}{{2}}}} \cdot \frac{{{symbol}}}{{\sqrt{{n}}}} \right)"
+        rf"\left( \bar{{X}} \m u_{{1-\frac{{\alpha}}{{2}}}} \cdot \frac{{{symbol}}}{{\sqrt{{n}}}}; \bar{{X}} \p u_{{1-\frac{{\alpha}}{{2}}}} \cdot \frac{{{symbol}}}{{\sqrt{{n}}}} \right)"
     )
 else:
     st.markdown("**Użyto rozkładu t-Studenta**")
