@@ -37,6 +37,10 @@ with col2:
 
 alpha = 1 - confidence / 100
 
+st.latex(rf"\alpha = {alpha:.2f}")
+st.latex(rf"1 - \alpha = {1 - alpha:.2f}")
+st.latex(rf"1 - \frac{{\alpha}}{{2}} = {1 - alpha/2:.2f}")
+
 # ======================
 # WYBÓR ROZKŁADU
 # ======================
@@ -99,15 +103,15 @@ st.markdown("### 1️⃣ Dane")
 st.latex(rf"n = {n}")
 st.latex(rf"\bar{{x}} = {mean}")
 st.latex(rf"{symbol} = {std}")
-st.latex(rf"\alpha = {alpha:.3f}")
+st.latex(rf"\alpha = {alpha:.2f}")
 
 # Krok 2
 st.markdown("### 2️⃣ Wartość krytyczna")
 
 if dist == "Z":
-    st.latex(rf"u_{{1-\frac{{\alpha}}{{2}}}} = {crit_value:.3f}")
+    st.latex(rf"u_{{1-\frac{{\alpha}}{{2}}}} = {crit_value:.2f}")
 else:
-    st.latex(rf"t_{{1-\frac{{\alpha}}{{2}}, {n-1}}} = {crit_value:.3f}")
+    st.latex(rf"t_{{1-\frac{{\alpha}}{{2}}, {n-1}}} = {crit_value:.2f}")
 
 # Krok 3
 st.markdown("### 3️⃣ Podstawienie")
@@ -120,7 +124,7 @@ st.latex(
 st.markdown("### 4️⃣ Wynik")
 
 st.latex(
-    rf"({mean:.3f} - {margin:.3f},\ {mean:.3f} + {margin:.3f})"
+    rf"({mean:.2f} - {margin:.2f},\ {mean:.2f} + {margin:.2f})"
 )
 
-st.success(f"Przedział ufności: ({lower:.3f}, {upper:.3f})")
+st.success(f"Przedział ufności: ({lower:.2f}, {upper:.2f})")
