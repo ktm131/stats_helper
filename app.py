@@ -76,7 +76,7 @@ if dist == "Z":
 else:
     st.markdown("**Użyto rozkładu t-Studenta**")
     st.latex(
-        rf"\left( \bar{{X}} \pm t_{{1-\frac{{\alpha}}{{2}}, n-1}} \cdot \frac{{s}}{{\sqrt{{n}}}} \right)"
+        rf"\left( \bar{{X}} - t_{{1-\frac{{\alpha}}{{2}}, n-1}} \cdot \frac{{s}}{{\sqrt{{n}}}}; \bar{{X}} + t_{{1-\frac{{\alpha}}{{2}}, n-1}} \cdot \frac{{s}}{{\sqrt{{n}}}}\right)"
     )
 
 st.markdown("---")
@@ -113,7 +113,7 @@ else:
 st.markdown("### 3️⃣ Podstawienie")
 
 st.latex(
-    rf"{mean} \pm {crit_value:.3f} \cdot \frac{{{std}}}{{\sqrt{{{n}}}}}"
+    rf"{mean} - {crit_value:.3f} \cdot \frac{{{std}}}{{\sqrt{{{n}}}}};{mean} + {crit_value:.3f} \cdot \frac{{{std}}}{{\sqrt{{{n}}}}}"
 )
 
 # Krok 4
